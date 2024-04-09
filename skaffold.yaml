@@ -1,0 +1,47 @@
+apiVersion: skaffold/v2beta16
+kind: Config
+metadata:
+  name: ruby-app
+
+build:
+  artifacts:
+    - image: ruby-rails
+      context: .
+      docker:
+          cacheFrom:
+          - ruby-rails
+          dockerfile: docker/ruby-rails.Dockerfile
+      sync:
+        manual:
+          - src: "./app/**/*.rb"
+            dest: app
+  local:
+    push: false
+
+deploy:
+  kubectl:
+    manifests:
+      #- k8s/manifests/namespace.yaml 
+      - k8s/manifests/secrets.yaml
+      - k8s/manifests/deployment.yaml
+      - k8s/manifests/service.yaml
+      - k8s/manifests/ingress.yaml
+      # - k8s/manifests/data/grafana-pv.yaml
+  helm:
+    releases:
+#       - name: grafana
+#         chartPath: ./helm_charts/grafana
+#         namespace: hf-review
+#         valuesFiles:
+#           - ./helm_charts/grafana/values.yaml
+      - name: postgres 
+        chartPath: ./helm_charts/postgresql
+        namespace: hf-review
+        valuesFiles:
+          - ./helm_charts/postgresql/values.yaml
+# # manage helm deployed services ports
+# portForward:
+# - resourceType: deployment
+#   resourceName: grafana
+#   namespace: hf-review  # 
+#   port: 3000 

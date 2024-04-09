@@ -1,0 +1,17 @@
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ruby-service
+  namespace: hf-review
+spec:
+# strictly for local dev purposes to prevent using random ip. Assign local ip through service, and eventually to nginx so www.hf-review.com is accessible
+  type: LoadBalancer
+  externalIPs:
+  - 192.168.10.91
+  selector:
+    app: ruby-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

@@ -1,0 +1,62 @@
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: ruby-ingress
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+# spec:
+#   rules:
+#     - host: hf-review.com
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: ruby-service
+#                 port:
+#                   number: 80
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ruby-ingress
+  namespace: hf-review
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  labels:
+    name: ruby-ingress
+spec:
+  # ingressClassName: nginx
+  rules:
+    - host: www.hf-review.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ruby-service
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: hf-review
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m" # adjust as needed
+spec:
+  rules:
+  - host: www.hf-review.com
+    http:
+      paths:
+      - path: /grafana
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana
+            port:
+              number: 80 # Grafana service port

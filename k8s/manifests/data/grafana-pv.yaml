@@ -1,0 +1,31 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: grafana-pv-volume
+  namespace: hf-review
+  labels:
+    type: local
+    app: grafana
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 200Mi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/grafana"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: grafana-pv-volume-claim
+  namespace: hf-review
+  labels:
+    app: grafana
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Mi
