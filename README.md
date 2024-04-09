@@ -42,7 +42,7 @@ kubectl get endpoints,svc,ingress -n hf-review
 kubectl exec -it deploy/ruby-app -n hf-review -- /bin/sh
 
 #patch load balancer
-kubectl patch service nginx-ingress-ingress-nginx-controller -n hf-review -p '{"spec": {"type": "LoadBalancer", "externalIPs":["192.168.10.91"]}}'C
+kubectl patch service nginx-ingress-ingress-nginx-controller -n hf-review -p '{"spec": {"type": "LoadBalancer", "externalIPs":["<local-ip>"]}}'C
 
 
 Site like reddit or threads that can 
@@ -78,24 +78,5 @@ helm install vault hashicorp/vault
 
 STUCK PVS?
 kubectl patch pv grafana-pv-volume -p '{"metadata":{"finalizers":null}}'
-
-
-rails generate migration CreateFacilities \
-  name:string \
-  address:string \
-  phone:string \
-  reviews:text \
-  images:string:array \
-  services:string:array \
-  doctors:string:array \
-  operating_hours:string \
-  insurance_accepted:text \
-  patient_capacity:integer \
-  medical_equipment:text \
-  specialized_departments:text \
-  accreditations:text \
-  patient_amenities:text \
-  health_records:boolean \
-  emergency_protocols:text
 
 rails generate migration CreateFacilities name:string address:string phone:string reviews:text images:string:array services:string:array doctors:string:array operating_hours:string insurance_accepted:text patient_capacity:integer medical_equipment:text specialized_departments:text accreditations:text patient_amenities:text health_records:boolean
